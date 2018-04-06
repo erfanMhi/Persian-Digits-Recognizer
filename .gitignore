@@ -1,0 +1,7 @@
+/.ipynb_checkpoints
+/*.xls
+/*.py
+/essays
+/data
+/__pycache__
+/.vscode
