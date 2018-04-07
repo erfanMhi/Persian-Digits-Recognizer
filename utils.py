@@ -21,7 +21,7 @@ def load_letter(folder, min_num_images=0):
     for image in image_files :
         image_file = os.path.join(folder, image)
         try:
-            image_data = (np.array(Image.open(os.path.join(folder, image_files[2])).resize((image_size,image_size))).astype(float) - 
+            image_data = (np.array(Image.open(os.path.join(folder, image)).resize((image_size,image_size))).astype(float) - 
                             pixel_depth / 2) / pixel_depth
             if image_data.shape != (image_size, image_size):
                 raise Exception('Unexpected image shape: %s' % str(image_data.shape))
@@ -40,11 +40,11 @@ def load_letter(folder, min_num_images=0):
     print('Standard deviation:', np.std(dataset))
     return dataset
 
-def maybe_save(root, min_num_images_per_class=0, force=False):
+def maybe_save(root,binary_save_path, min_num_images_per_class=0, force=False):
   data_folders = os.listdir(root)
   dataset_names = []
   for folder in data_folders:
-    set_filename = root + folder + '.npy'
+    set_filename = binary_save_path + folder + '.npy'
     dataset_names.append(set_filename)
     if os.path.exists(set_filename) and not force:
       # You may override by setting force=True.
@@ -52,8 +52,10 @@ def maybe_save(root, min_num_images_per_class=0, force=False):
     else:
       print('Pickling %s.' % set_filename)
       dataset = load_letter(root + folder, min_num_images_per_class)
+      if (not os.path.exists(binary_save_path)) :
+        os.makedirs(binary_save_path)
       try:
-        np.save(set_filename,dataset)   
+        np.save(binary_save_path + folder,dataset)   
       except Exception as e:
         print('Unable to save data to', set_filename, ':', e)
 
