@@ -9,10 +9,9 @@ from PIL import Image
 from IPython.display import display
 from scipy import ndimage
 
-image_size = 28
 pixel_depth = 255.0
 
-def load_letter(folder, min_num_images=0):
+def load_letter(folder, min_num_images=0,image_size=28):
     """Load the data for a single letter label."""
     image_files = os.listdir(folder)
     dataset = np.ndarray(shape=(len(image_files), image_size, image_size),
@@ -40,7 +39,7 @@ def load_letter(folder, min_num_images=0):
     print('Standard deviation:', np.std(dataset))
     return dataset
 
-def maybe_save(root,binary_save_path, min_num_images_per_class=0, force=False):
+def maybe_save(root,binary_save_path,image_size=28, min_num_images_per_class=0, force=False):
   data_folders = os.listdir(root)
   dataset_names = []
   for folder in data_folders:
@@ -51,7 +50,7 @@ def maybe_save(root,binary_save_path, min_num_images_per_class=0, force=False):
       print('%s already present - Skipping pickling.' % set_filename)
     else:
       print('Pickling %s.' % set_filename)
-      dataset = load_letter(root + folder, min_num_images_per_class)
+      dataset = load_letter(root + folder, min_num_images_per_class,image_size)
       if (not os.path.exists(binary_save_path)) :
         os.makedirs(binary_save_path)
       try:
