@@ -50,7 +50,7 @@ def maybe_save(root,binary_save_path,image_size=28, min_num_images_per_class=0, 
       print('%s already present - Skipping pickling.' % set_filename)
     else:
       print('Pickling %s.' % set_filename)
-      dataset = load_letter(root + folder, min_num_images_per_class,image_size)
+      dataset = load_letter(root + folder, min_num_images_per_class,image_size )
       if (not os.path.exists(binary_save_path)) :
         os.makedirs(binary_save_path)
       try:
